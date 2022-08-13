@@ -1,0 +1,40 @@
+services:
+  exporter:
+    image: exporter
+    container_name: exporter
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    volumes:
+      - ./exporter/src:/exporter
+    stop_signal: SIGKILL
+
+  prometheus:
+    image: prom/prometheus:v2.37.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:9.0.4
+    container_name: grafana
+    depends_on:
+      - prometheus
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/config.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/default.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false

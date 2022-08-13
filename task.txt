@@ -1,0 +1,44 @@
+You need to provide a docker-compose file with:
+
+ 
+
+Container exposing metrics for Prometheus (aka "exposer")
+
+Prometheus scraping those metrics (aka "scraper")
+
+Grafana container (aka "viewer")
+
+ 
+
+Requirements:
+
+ 
+
+We expect to receive it as an archive
+
+The “exposer” should be written in python3.
+
+Archive should include the Dockerfile (for the "exposer" service).
+
+There should be a readme with brief instructions and all relevant documentation
+
+All the tasks should be runnable as one liner (including build)
+
+Add dashboards to Grafana that present all the metrics above (add the JSON file to the archive file)
+
+We expect that the "exposer" will expose dummy metrics of the following type:
+
+ 
+
+Histogram
+Gauge
+Counter
+ 
+
+*(metrics naming is not important).
+
+ 
+
+References:
+
+https://github.com/prometheus/client_python
